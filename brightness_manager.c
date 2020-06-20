@@ -7,6 +7,8 @@
 #include<sys/types.h>
 #include<unistd.h>
 
+#define MIN_BRIGHTNESS 100
+
 void writeValue(int fd, long val){
   lseek(fd, 0, SEEK_SET);
   char buf[10];
@@ -42,14 +44,12 @@ int main(int argc, char** argv){
   long valmax = strtol(maxvalue, &endptr, 10);
   
   long newVal = currVal + val;
-  if (newVal < 500)
-    writeValue(fd, 500);
+  if (newVal < MIN_BRIGHTNESS)
+    writeValue(fd, MIN_BRIGHTNESS);
   else if (newVal > valmax)
     writeValue(fd, valmax);
   else
     writeValue(fd, newVal);
-
-  
 
   close(fd);
   close(fdmax);
